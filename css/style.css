@@ -1,0 +1,14 @@
+@import url(http://fonts.googleapis.com/css?family=Comfortaa&subset=latin,latin-ext);
+body {
+  font-family: 'Comfortaa', cursive;
+  font-size: 1.5em;
+  color: #333333;
+}
+a, a:visited, a:hover {
+  color: #000000;
+}
+
+#content {
+  width:80%;
+  margin: 0 auto;
+}
