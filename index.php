@@ -13,7 +13,7 @@
   <body>
   <div id="content">
     <h1>Plan, track and adapt</h1>
-    <p>Soy David González, trabajo entre el desarrollo de software y las operaciones. Obsesionado con que las cosas funcionen.</p>
+    <p>Soy David González, trabajo entre el desarrollo de software y las operaciones. Me gusta que las cosas funcionen bien.</p>
     <p>Vivo en Donostia, estudié Ingeniería Técnica en informática de sistemas, he trabajado <a href="http://arista.es" alt="Arista interactiva">Arista interactiva</a>, <a href="http://diariovasco.com" alt="Diariovasco.com">diariovasco.com</a>, <a href="http://dvbus.info" alt="DVbus canal de información urbana">dvbus.info</a>, <a href="http://hispavista.com" alt="Hispavista">Hispavista</a>, <a href="http://binovo.es" alt="Binovo">Binovo</a> y actualmente compagino mi trabajo en <a href="http://nemsolutions.com" alt="NEM Solutions">NEM Solutions</a> con colaboraciones con <a href="http://buzzko.com">Buzzko Marketing</a>.</p>
     <p>En mi día a día trabajo buscando soluciones dirigidas al manejo de grandes volúmenes de información y las mejoras contínuas en aplicaciones web relacionadas con su rendimiento. Por otro lado parte de mi trabajo está enfocado a la mejora del ciclo de desarrollo de software en nuestro equipo adoptando buenas prácticas como la integración contínua, métricas, et cetera. </p>
     <div id="enlaces">
