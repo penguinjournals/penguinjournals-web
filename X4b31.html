@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Yupiiii! - Misión Cumplida 💖</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Canvas Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Bubblegum Sans & Fredoka -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #ffd1dc 0%, #ffe4e1 25%, #e0f7fa 50%, #f3e5f5 75%, #fff9c4 100%);
+            background-size: 300% 300%;
+            animation: gradientBG 15s ease infinite;
+            color: #4a4a4a;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .font-kawaii {
+            font-family: 'Bubblegum Sans', cursive;
+        }
+
+        /* Floating Animation for Kawaii elements */
+        @keyframes float-gentle {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(4deg); }
+        }
+
+        @keyframes float-reverse {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(12px) rotate(-4deg); }
+        }
+
+        .animate-float {
+            animation: float-gentle 4s ease-in-out infinite;
+        }
+
+        .animate-float-reverse {
+            animation: float-reverse 5s ease-in-out infinite;
+        }
+
+        /* Bouncing title effect */
+        @keyframes kawaii-bounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-10px) scale(1.05); }
+        }
+
+        .bounce-title {
+            animation: kawaii-bounce 2.5s ease-in-out infinite;
+        }
+
+        /* Soft Kawaii Card Shadows */
+        .kawaii-card {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+            border: 4px solid #ffffff;
+            box-shadow: 0 15px 35px rgba(255, 182, 193, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.8);
+        }
+
+        .kawaii-polaroid {
+            background: #ffffff;
+            box-shadow: 0 20px 40px rgba(186, 104, 200, 0.25);
+            border: 4px dashed #ffb7b2;
+        }
+
+        /* Cute Sparkle Animation */
+        @keyframes pulse-sparkle {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .sparkle-icon {
+            animation: pulse-sparkle 2s infinite ease-in-out;
+        }
+
+        /* Custom Kawaii Wobbly Button */
+        .kawaii-btn {
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        .kawaii-btn:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 12px 25px rgba(72, 187, 120, 0.4);
+        }
+        .kawaii-btn:active {
+            transform: translateY(2px) scale(0.98);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between items-center relative px-4 py-6 md:py-10">
+
+    <!-- Floating Background Elements -->
+    <div class="fixed top-8 left-6 text-pink-300 text-5xl animate-float pointer-events-none z-0">☁️</div>
+    <div class="fixed top-20 right-10 text-yellow-300 text-4xl animate-float-reverse pointer-events-none z-0">⭐</div>
+    <div class="fixed bottom-12 left-10 text-purple-300 text-5xl animate-float-reverse pointer-events-none z-0">🌸</div>
+    <div class="fixed bottom-24 right-8 text-pink-400 text-4xl animate-float pointer-events-none z-0">💖</div>
+    <div class="fixed top-1/2 left-4 text-blue-300 text-4xl animate-float pointer-events-none z-0">✨</div>
+    <div class="fixed top-1/3 right-6 text-emerald-300 text-5xl animate-float-reverse pointer-events-none z-0">☁️</div>
+
+    <!-- MAIN CONTAINER -->
+    <main class="max-w-2xl w-full flex flex-col items-center z-10 my-auto">
+
+        <!-- HEADER SECTION -->
+        <div class="text-center mb-6 relative">
+            <div class="inline-flex items-center gap-2 bg-pink-100/90 text-pink-600 font-bold px-5 py-2 rounded-full text-sm md:text-base border-2 border-pink-200 shadow-sm mb-3">
+                <span>✨</span> ¡Misión Boda Completada! <span>✨</span>
+            </div>
+
+            <h1 class="text-6xl md:text-8xl font-kawaii text-pink-500 drop-shadow-lg tracking-wide bounce-title flex items-center justify-center gap-3">
+                <span class="text-yellow-400 sparkle-icon">✨</span>
+                ¡Yupiiii!
+                <span class="text-pink-400 sparkle-icon" style="animation-delay: 1s;">💖</span>
+            </h1>
+            <p class="text-purple-600 font-semibold text-lg md:text-xl mt-1">
+                ¡Habéis encontrado la página secreta! 🎉
+            </p>
+        </div>
+
+        <!-- PHOTO POLAROID CARD -->
+        <div class="relative w-full mb-8">
+            <div class="kawaii-polaroid rounded-3xl p-4 md:p-6 relative group transition-all duration-300 hover:rotate-1">
+                
+                <!-- Decorative Stickers -->
+                <div class="absolute -top-4 -left-4 bg-yellow-200 text-yellow-800 text-xs font-bold px-3 py-1.5 rounded-full shadow-md transform -rotate-12 border border-yellow-300 z-20">
+                    🧩 Amaia eta Mikel
+                </div>
+                <div class="absolute -top-3 -right-3 text-3xl animate-bounce z-20">
+                    🎀
+                </div>
+                <div class="absolute -bottom-4 -right-2 text-4xl z-20">
+                    🧸
+                </div>
+                <div class="absolute -bottom-3 -left-3 text-3xl z-20">
+                    🌴
+                </div>
+
+                <!-- Main Lego Image -->
+                <div class="overflow-hidden rounded-2xl relative border-2 border-pink-100 bg-pink-50 cursor-pointer" onclick="burstExtraConfetti()">
+                    <img 
+                        src="amaia-mikel.jpeg" 
+                        alt="Pareja Lego Dibujo Kawaii" 
+                        class="w-full h-auto object-cover transform transition-transform duration-500 hover:scale-105"
+                    />
+                </div>
+
+                <div class="mt-4 text-center">
+                    <p class="font-kawaii text-2xl text-pink-500">Gora ezkonberriak! 💕</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- INSTRUCTIONS CARD -->
+        <div class="kawaii-card w-full rounded-3xl p-6 md:p-8 text-center relative overflow-hidden border-4 border-pink-200">
+            
+            <div class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-pink-100 text-pink-500 text-2xl mb-3 shadow-inner">
+                💌
+            </div>
+
+            <h2 class="text-2xl md:text-3xl font-bold mb-3 text-purple-700 font-kawaii">
+                ¿Y ahora qué hacemos?
+            </h2>
+
+            <p class="text-base md:text-xl text-slate-700 mb-6 leading-relaxed font-semibold">
+                "En realidad tirarnos un whatsapp con la palabra clave 
+                <span class="inline-block bg-gradient-to-r from-yellow-300 via-amber-300 to-yellow-200 text-amber-900 px-4 py-1.5 rounded-2xl font-bold text-lg md:text-2xl shadow-md border-2 border-yellow-400 transform -rotate-2 hover:rotate-0 transition-transform">
+                    superguay superguay
+                </span> 
+                para saber que habéis llegado"
+            </p>
+
+            <!-- WhatsApp Direct Action Button -->
+            <a 
+                id="whatsappBtn"
+                href="https://wa.me/?text=superguay superguay" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="kawaii-btn inline-flex items-center justify-center gap-3 bg-emerald-400 hover:bg-emerald-300 text-emerald-950 font-extrabold text-lg md:text-xl py-4 px-8 rounded-2xl shadow-lg border-2 border-emerald-200 w-full md:w-auto">
+                <i class="fa-brands fa-whatsapp text-3xl text-emerald-800"></i>
+                <span>Enviar "superguay superguay" por WhatsApp</span>
+            </a>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="mt-8 text-center text-purple-400 text-sm font-semibold z-10">
+        <p class="flex items-center justify-center gap-1">
+            Hecho con 💖 y caramelos de colores para la boda 💒
+        </p>
+    </footer>
+
+    <script>
+        // Continuous Kawaii Confetti Loop
+        var defaults = { 
+            startVelocity: 20, 
+            spread: 360, 
+            ticks: 80, 
+            zIndex: 0,
+            scalar: 1.1
+        };
+
+        function randomInRange(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        // Soft Kawaii Pastel Palette Colors
+        const pastelColors = ['#ffb3ba', '#ffdfba', '#ffffba', '#baffc9', '#bae1ff', '#e8bafb'];
+
+        function startContinuousConfetti() {
+            setInterval(function() {
+                // Fire left side pastel confetti
+                confetti(Object.assign({}, defaults, {
+                    particleCount: 2,
+                    origin: { x: randomInRange(0.1, 0.35), y: Math.random() - 0.2 },
+                    colors: pastelColors
+                }));
+                // Fire right side pastel confetti
+                confetti(Object.assign({}, defaults, {
+                    particleCount: 2,
+                    origin: { x: randomInRange(0.65, 0.9), y: Math.random() - 0.2 },
+                    colors: pastelColors
+                }));
+            }, 200);
+        }
+
+        // Extra joyful explosion on click/tap
+        function burstExtraConfetti() {
+            confetti({
+                particleCount: 90,
+                spread: 120,
+                origin: { y: 0.6 },
+                colors: ['#ffb3ba', '#ffdfba', '#ffffba', '#baffc9', '#bae1ff', '#e8bafb']
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            startContinuousConfetti();
+        });
+    </script>
+</body>
+</html>
