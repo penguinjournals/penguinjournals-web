@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La Behobia de los comiloners</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700;800&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column, race-day supplement; bib chips identify each runner; the pocket bib gets its own "case file" card. */
+:root {
+  --bg: #f5f7f8; --panel: #ffffff; --ink: #111417; --ink-2: #4a5259; --ink-3: #7a838b; --rule: #dde2e6; --grid: #e7ebee;
+  --accent: #0b6e66; --bar: #2a78d6; --bib: #ffffff;
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100; --s5: #e87ba4;
+  --display: "Barlow Condensed", "Arial Narrow", "Helvetica Neue", sans-serif;
+  --body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:#121417; --panel:#1a1d21; --ink:#eef1f3; --ink-2:#b4bcc3; --ink-3:#8a939b; --rule:#2c3137; --grid:#24282d;
+    --accent:#3fb3a7; --bar:#3987e5; --bib:#1a1d21;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg:#121417; --panel:#1a1d21; --ink:#eef1f3; --ink-2:#b4bcc3; --ink-3:#8a939b; --rule:#2c3137; --grid:#24282d;
+  --accent:#3fb3a7; --bar:#3987e5; --bib:#1a1d21;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg); color: var(--ink); font: 400 16px/1.55 var(--body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.page { max-width: 820px; margin: 0 auto; padding-block: 44px 56px; display: grid; gap: 60px; }
+.kicker { font: 600 12px/1.3 var(--body); letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+h1 { font: 800 clamp(44px, 9vw, 88px)/.92 var(--display); margin: 0; text-transform: uppercase; text-wrap: balance; }
+h2 { font: 700 clamp(27px, 4.4vw, 38px)/1.04 var(--display); margin: 0; text-wrap: balance; }
+p { margin: 0; }
+.hero { display: grid; gap: 20px; }
+.lede { font-size: clamp(18px, 2.4vw, 21px); line-height: 1.45; max-width: 36em; text-wrap: pretty; }
+b, .lede b { font-weight: 600; }
+.figures { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 3px solid var(--ink); border-bottom: 1px solid var(--rule); }
+.fig { padding: 12px 12px 14px 0; display: grid; gap: 2px; min-width: 0; }
+.fig + .fig { padding-left: 14px; border-left: 1px solid var(--rule); }
+.fig .n { font: 700 clamp(36px, 6vw, 48px)/1 var(--display); font-variant-numeric: tabular-nums; }
+.fig .l { font-size: 13px; color: var(--ink-2); line-height: 1.3; }
+
+section { display: grid; gap: 16px; min-width: 0; }
+.ch-head { display: grid; gap: 10px; }
+.ch-num { display: inline-flex; align-items: baseline; gap: 10px; }
+.bibno { font: 700 13px/1 var(--mono); border: 1.5px solid var(--ink); padding: 4px 7px 3px; border-radius: 3px; background: var(--bib); }
+.dek { max-width: 40em; color: var(--ink-2); text-wrap: pretty; }
+.dek b { color: var(--ink); }
+.note { font-size: 13px; color: var(--ink-3); max-width: 46em; }
+
+/* Roster */
+.roster { display: grid; border-top: 1px solid var(--ink); }
+.row { display: grid; grid-template-columns: 64px minmax(0, 1.1fr) minmax(90px, 1.4fr) auto; align-items: center; gap: 6px 14px; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+.chip { font: 500 13px/1 var(--mono); border: 1.5px solid var(--ink); border-radius: 3px; padding: 5px 0 4px; text-align: center; background: var(--bib); font-variant-numeric: tabular-nums; }
+.row.pocket .chip { border-style: dashed; }
+.who { display: grid; min-width: 0; }
+.who .nm { font: 700 22px/1.1 var(--display); }
+.who .tag { font-size: 13px; color: var(--ink-2); line-height: 1.3; }
+.track { height: 12px; position: relative; }
+.track i { position: absolute; inset: 0 auto 0 0; min-width: 3px; border-radius: 0 4px 4px 0; background: var(--bar); }
+.row.pocket .track i { background: repeating-linear-gradient(135deg, var(--bar) 0 4px, transparent 4px 8px); outline: 1.5px solid var(--bar); outline-offset: -1.5px; }
+.tm { text-align: right; display: grid; font-variant-numeric: tabular-nums; }
+.tm .t { font: 700 22px/1.1 var(--display); }
+.tm .g { font-size: 13px; color: var(--ink-2); }
+@media (max-width: 560px) {
+  .row { grid-template-columns: 58px minmax(0, 1fr) auto; }
+  .tm { grid-column: 3; grid-row: 1; }
+  .track { grid-column: 1 / -1; grid-row: 2; height: 8px; }
+}
+
+/* Chart */
+.chart { position: relative; min-height: 240px; }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.axis-t { fill: var(--ink-2); font: 400 12px var(--body); font-variant-numeric: tabular-nums; }
+.end-t { fill: var(--ink); font: 600 12px var(--body); }
+.tip { position: absolute; pointer-events: none; z-index: 5; background: var(--panel); color: var(--ink); border: 1px solid var(--rule); border-radius: 6px; padding: 8px 10px; font-size: 13px; line-height: 1.4; box-shadow: 0 6px 20px rgb(0 0 0 / .14); min-width: 150px; }
+.tip[hidden] { display: none; }
+.tip .t { font-weight: 600; }
+.tip .r { display: flex; justify-content: space-between; gap: 12px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.tip .r b { color: var(--ink); }
+
+/* Awards */
+.awards { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+.award { background: var(--panel); border: 1px solid var(--rule); border-radius: 8px; padding: 16px 18px 18px; display: grid; gap: 6px; align-content: start; min-width: 0; }
+.award .ttl { font: 700 24px/1.05 var(--display); text-wrap: balance; }
+.award .to { font-size: 13px; font-weight: 600; color: var(--accent); }
+.award p { font-size: 14.5px; color: var(--ink-2); line-height: 1.5; }
+.award p b { color: var(--ink); }
+
+/* Case file */
+.case { border: 2px dashed var(--ink); border-radius: 10px; background: var(--panel); padding: 22px; display: grid; gap: 20px; }
+.case-top { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 20px; }
+.bibcard { font: 800 44px/1 var(--display); border: 2px solid var(--ink); border-radius: 6px; padding: 8px 14px 6px; background: var(--bib); position: relative; transform: rotate(-3deg); }
+.bibcard::before, .bibcard::after { content: ""; position: absolute; top: 6px; width: 6px; height: 6px; border-radius: 50%; border: 1.5px solid var(--ink-3); }
+.bibcard::before { left: 6px; } .bibcard::after { right: 6px; }
+.case-name { display: grid; gap: 2px; }
+.case-name .nm { font: 700 28px/1.05 var(--display); }
+.case-name .ct { font-size: 13px; color: var(--ink-2); }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; }
+.tiles .n { font: 700 36px/1 var(--display); font-variant-numeric: tabular-nums; }
+.tiles .l { font-size: 13px; color: var(--ink-2); line-height: 1.35; }
+.log { display: grid; border-top: 1px solid var(--rule); }
+.log > div { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--rule); font-size: 14.5px; }
+.log .k { font: 500 12px/1.7 var(--mono); color: var(--ink-3); text-transform: uppercase; }
+.log .v { color: var(--ink-2); }
+.log .v b { color: var(--ink); }
+.verdict { font: 700 clamp(22px, 3.4vw, 28px)/1.12 var(--display); text-wrap: balance; }
+footer { border-top: 1px solid var(--rule); padding-top: 14px; }
+</style>
+</head>
+<body>
+<main class="page">
+
+  <header class="hero">
+    <div class="kicker">Behobia–San Sebastián · 8 de noviembre de 2026 · Edición comiloners</div>
+    <h1>Ocho dorsales, siete pares de piernas</h1>
+    <p class="lede" id="lede"></p>
+    <div class="figures">
+      <div class="fig"><span class="n">8</span><span class="l">dorsales en la clasificación oficial</span></div>
+      <div class="fig"><span class="n">7</span><span class="l">personas que corrieron de verdad</span></div>
+      <div class="fig"><span class="n">1</span><span class="l">bolsillo con tiempo oficial</span></div>
+    </div>
+  </header>
+
+  <section id="clasificacion">
+    <div class="ch-head">
+      <div class="ch-num"><span class="bibno">01</span><span class="kicker">La clasificación de los comiloners</span></div>
+      <h2 id="h-roster"></h2>
+      <p class="dek" id="d-roster"></p>
+    </div>
+    <div class="roster" id="roster"></div>
+    <p class="note">La barra es el tiempo perdido respecto al primero de los comiloners. La barra rayada no corrió.</p>
+  </section>
+
+  <section id="ritmo">
+    <div class="ch-head">
+      <div class="ch-num"><span class="bibno">02</span><span class="kicker">El ritmo</span></div>
+      <h2 id="h-pace"></h2>
+      <p class="dek" id="d-pace"></p>
+    </div>
+    <div class="chart" id="c-pace"></div>
+    <p class="note">Ritmo en cada tramo de 5 km, en minutos por kilómetro: cuanto más arriba, más lento. «El trío» es la media de Mónica, Iñigo A. y David B., que no se separaron en 20 km.</p>
+  </section>
+
+  <section id="premios">
+    <div class="ch-head">
+      <div class="ch-num"><span class="bibno">03</span><span class="kicker">Entrega de premios</span></div>
+      <h2>Cinco premios que nadie había pedido</h2>
+    </div>
+    <div class="awards" id="awards"></div>
+  </section>
+
+  <section id="arkaitz">
+    <div class="ch-head">
+      <div class="ch-num"><span class="bibno">04</span><span class="kicker">Expediente 15322</span></div>
+      <h2 id="h-case"></h2>
+      <p class="dek" id="d-case"></p>
+    </div>
+    <div class="case">
+      <div class="case-top">
+        <div class="bibcard">15322</div>
+        <div class="case-name"><span class="nm">Arkaitz</span><span class="ct" id="case-ct"></span></div>
+      </div>
+      <div class="tiles" id="tiles"></div>
+      <div class="log" id="log"></div>
+      <p class="verdict" id="verdict"></p>
+    </div>
+  </section>
+
+  <footer>
+    <p class="note">Datos: clasificación oficial de la Behobia–San Sebastián 2026. Los tiempos y los puestos son reales. Las interpretaciones, discutibles.</p>
+  </footer>
+</main>
+
+<script>
+const DATA = {"crew": [{"bib": 8228, "name": "Iñigo P.", "first": "Iñigo", "T": 5709, "k5": 1350, "k10": 2726, "k15": 4170, "pos": 4703, "cat": "Veterano", "catpos": 1203, "catn": 4854, "half_diff": 257, "rank": [4138, 3853, 4304, 4669], "passed": 302, "passed_by": 818}, {"bib": 8101, "name": "Josean", "first": "Josean", "T": 5938, "k5": 1493, "k10": 2974, "k15": 4458, "pos": 6408, "cat": "Veterano", "catpos": 1630, "catn": 4854, "half_diff": -10, "rank": [8968, 7814, 7374, 6358], "passed": 2684, "passed_by": 78}, {"bib": 3893, "name": "David B.", "first": "David", "T": 6169, "k5": 1491, "k10": 2972, "k15": 4499, "pos": 8537, "cat": "Veterano", "catpos": 2073, "catn": 4854, "half_diff": 225, "rank": [8886, 7767, 7899, 8470], "passed": 1100, "passed_by": 673}, {"bib": 3894, "name": "Iñigo A.", "first": "Iñigo", "T": 6170, "k5": 1492, "k10": 2975, "k15": 4502, "pos": 8541, "cat": "Veterano", "catpos": 2074, "catn": 4854, "half_diff": 220, "rank": [8927, 7840, 7948, 8481], "passed": 1120, "passed_by": 660}, {"bib": 8316, "name": "Mónica", "first": "Mónica", "T": 6170, "k5": 1491, "k10": 2973, "k15": 4499, "pos": 8543, "cat": "Veterana", "catpos": 244, "catn": 1884, "half_diff": 224, "rank": [8886, 7798, 7899, 8481], "passed": 1097, "passed_by": 678}, {"bib": 13310, "name": "Jacob", "first": "Jacob", "T": 6296, "k5": 1475, "k10": 3020, "k15": 4633, "pos": 9774, "cat": "Veterano", "catpos": 2294, "catn": 4854, "half_diff": 256, "rank": [8186, 8730, 9662, 9696], "passed": 407, "passed_by": 1884}, {"bib": 15322, "name": "Arkaitz", "first": "Arkaitz", "T": 6886, "k5": null, "k10": 3503, "k15": 5153, "pos": 15629, "cat": "Veterano", "catpos": 3382, "catn": 4854, "half_diff": -120}, {"bib": 21921, "name": "David G.", "first": "David", "T": 6886, "k5": 1783, "k10": 3503, "k15": 5152, "pos": 15630, "cat": "Veterano", "catpos": 3383, "catn": 4854, "half_diff": -120, "rank": [20533, 18453, 16634, 15522], "passed": 5033, "passed_by": 28}], "meta": {"finishers": 26036, "full": 25868, "median": 6617}};
+</script>
+<script>
+(() => {
+  const crew = DATA.crew, M = DATA.meta;
+  const by = bib => crew.find(d => d.bib === bib);
+  const inigoP = by(8228), josean = by(8101), davidB = by(3893), inigoA = by(3894), monica = by(8316), jacob = by(13310), ark = by(15322), davidG = by(21921);
+  const num = v => v.toLocaleString("es-ES");
+  const hms = s => { s = Math.round(s); const sg = s < 0 ? "−" : ""; s = Math.abs(s); const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60;
+    return h ? `${sg}${h}:${String(m).padStart(2, "0")}:${String(x).padStart(2, "0")}` : `${sg}${m}:${String(x).padStart(2, "0")}`; };
+  const pace = s => `${Math.floor(Math.round(s) / 60)}:${String(Math.round(s) % 60).padStart(2, "0")}`;
+  const $ = id => document.getElementById(id);
+  /* parts: strings are plain text, {b: "..."} is bold */
+  const fill = (el, parts) => { el.replaceChildren(...parts.map(p => { if (typeof p === "string") return document.createTextNode(p); const b = document.createElement("b"); b.textContent = p.b; return b; })); return el; };
+  const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+  const segs = d => [d.k5, d.k5 ? d.k10 - d.k5 : null, d.k15 - d.k10, d.T - d.k15];
+
+  /* ---------- Hero ---------- */
+  fill($("lede"), ["Ocho dorsales de Donostia salen en la clasificación oficial. Siete hicieron los 20 kilómetros corriendo. El octavo los hizo dentro de un bolsillo y, aun así, ", { b: "quedó por delante de quien lo llevaba" }, "."]);
+
+  /* ---------- 01 Roster ---------- */
+  const first = crew[0], last = crew[crew.length - 1], maxGap = last.T - first.T;
+  $("h-roster").textContent = `${first.name} llegó ${hms(maxGap)} antes que el último`;
+  fill($("d-roster"), ["Entre el primero y el último de los comiloners caben casi 20 minutos. En medio, tres personas entraron en ", { b: "un solo segundo" }, " y un dorsal sin dueño se coló en la séptima plaza."]);
+  const tags = { 8228: "Ya duchado", 8101: "El metrónomo", 3893: "Ganó el sprint del trío", 3894: "A un segundo de David B.", 8316: "La mejor en su categoría", 13310: "Salió con prisa", 15322: "No corrió", 21921: "Corrió por dos" };
+  $("roster").replaceChildren(...crew.map(d => {
+    const row = el("div", "row" + (d.bib === 15322 ? " pocket" : ""));
+    const who = el("div", "who"); who.append(el("span", "nm", d.name), el("span", "tag", tags[d.bib]));
+    const track = el("div", "track"); const bar = el("i"); bar.style.width = (100 * (d.T - first.T) / maxGap) + "%"; track.append(bar);
+    const tm = el("div", "tm"); tm.append(el("span", "t", hms(d.T)), el("span", "g", d === first ? "primero" : "+" + hms(d.T - first.T)));
+    row.append(el("span", "chip", d.bib), who, track, tm); return row;
+  }));
+
+  /* ---------- 02 Pace ---------- */
+  const faders = [inigoP, davidB, inigoA, monica, jacob].map(d => d.half_diff);
+  $("h-pace").textContent = "Solo Josean y David G. llegaron enteros";
+  fill($("d-pace"), ["Josean clavó los cuatro tramos: del más rápido al más lento hay ", { b: `${Math.max(...segs(josean)) - Math.min(...segs(josean))} segundos` }, ". David G. fue de menos a más e hizo la segunda mitad ", { b: hms(-davidG.half_diff) },
+    " más rápida que la primera. Los otros cinco la hicieron entre ", { b: hms(Math.min(...faders)) }, " y ", { b: hms(Math.max(...faders)) }, " más lenta."]);
+  const trio = [0, 1, 2, 3].map(i => (segs(davidB)[i] + segs(inigoA)[i] + segs(monica)[i]) / 3);
+  const series = [
+    { name: "Iñigo P.", c: "--s1", v: segs(inigoP) }, { name: "Josean", c: "--s2", v: segs(josean) }, { name: "El trío", c: "--s3", v: trio },
+    { name: "Jacob", c: "--s4", v: segs(jacob) }, { name: "David G. + Arkaitz", c: "--s5", v: segs(davidG) }
+  ].map(s => ({ ...s, p: s.v.map(x => x / 5) }));
+  const names = ["0–5 km", "5–10 km", "10–15 km", "15–20 km"];
+  const NS = "http://www.w3.org/2000/svg";
+  const sv = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.append(e); return e; };
+
+  function drawPace() {
+    const box = $("c-pace"), W = box.clientWidth; if (!W) return;
+    const narrow = W < 520, h = narrow ? 330 : 380, m = { t: 22, r: narrow ? 122 : 138, b: 30, l: 42 };
+    const lo = 255, hi = 365;
+    const x = i => m.l + 12 + i * (W - m.l - m.r - 24) / 3, y = v => m.t + (hi - v) / (hi - lo) * (h - m.t - m.b);
+    box.replaceChildren();
+    const svg = sv("svg", { viewBox: `0 0 ${W} ${h}`, role: "img", "aria-label": "Ritmo por tramo de 5 km de cada corredor. Josean mantiene el ritmo, David G. acelera y el resto se frena." }, box);
+    const tip = el("div", "tip"); tip.hidden = true; box.append(tip);
+    for (let v = 270; v <= 360; v += 15) {
+      sv("line", { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), style: "stroke:var(--grid)" }, svg);
+      sv("text", { x: m.l - 6, y: y(v), dy: "0.35em", "text-anchor": "end", class: "axis-t" }, svg).textContent = pace(v);
+    }
+    sv("text", { x: m.l - 6, y: m.t - 10, "text-anchor": "end", class: "axis-t" }, svg).textContent = "min/km";
+    names.forEach((nm, i) => { sv("text", { x: x(i), y: h - 8, "text-anchor": "middle", class: "axis-t" }, svg).textContent = narrow ? nm.replace(" km", "") : nm; });
+    series.forEach(s => {
+      sv("path", { d: s.p.map((v, i) => `${i ? "L" : "M"}${x(i)},${y(v)}`).join(""), fill: "none", "stroke-width": 2.5, "stroke-linejoin": "round", "stroke-linecap": "round", style: `stroke:var(${s.c})` }, svg);
+    });
+    series.forEach(s => s.p.forEach((v, i) => {
+      sv("circle", { cx: x(i), cy: y(v), r: 4.5, "stroke-width": 2, style: `fill:var(${s.c});stroke:var(--bg)` }, svg);
+      const hit = sv("circle", { cx: x(i), cy: y(v), r: 13, fill: "transparent" }, svg);
+      hit.addEventListener("pointermove", ev => {
+        tip.replaceChildren(el("div", "t", s.name));
+        [[names[i], pace(v) + " /km"], ["Tiempo del tramo", hms(s.v[i])]].forEach(([k, val]) => { const r = el("div", "r"); r.append(el("span", null, k), el("b", null, val)); tip.append(r); });
+        tip.hidden = false;
+        const bb = box.getBoundingClientRect(), px = ev.clientX - bb.left, py = ev.clientY - bb.top, tw = tip.offsetWidth, th = tip.offsetHeight;
+        let tx = px + 14; if (tx + tw > bb.width) tx = px - tw - 14; tip.style.left = Math.max(0, tx) + "px";
+        tip.style.top = (py - th - 12 < 0 ? py + 16 : py - th - 12) + "px";
+      });
+      hit.addEventListener("pointerleave", () => { tip.hidden = true; });
+    }));
+    const ends = series.map(s => ({ s, y: y(s.p[3]) })).sort((a, b) => a.y - b.y);
+    for (let i = 1; i < ends.length; i++) if (ends[i].y - ends[i - 1].y < 16) ends[i].y = ends[i - 1].y + 16;
+    ends.forEach(e => {
+      sv("circle", { cx: W - m.r + 12, cy: e.y, r: 4, style: `fill:var(${e.s.c})` }, svg);
+      sv("text", { x: W - m.r + 21, y: e.y, dy: "0.35em", class: "end-t" }, svg).textContent = e.s.name;
+    });
+  }
+
+  /* ---------- 03 Awards ---------- */
+  const km5order = crew.filter(d => d.k5).sort((a, b) => a.k5 - b.k5).map(d => d.bib);
+  const ord = ["", "Primero", "Segundo", "Tercero", "Cuarto", "Quinto", "Sexto", "Séptimo", "Octavo"];
+  const awards = [
+    ["Premio Ducha Caliente", "Iñigo P.", ["Llegó ", { b: hms(davidG.T - inigoP.T) }, " antes que David G. Le dio tiempo a ducharse, y eso que sus últimos 5 km fueron ", { b: hms(segs(inigoP)[3] - segs(inigoP)[0]) }, " más lentos que los primeros."]],
+    ["Premio Metrónomo", "Josean", ["Cuatro tramos de 5 km entre ", { b: hms(Math.min(...segs(josean))) }, " y ", { b: hms(Math.max(...segs(josean))) }, ". No atacó a nadie: siguió igual mientras el trío se apagaba, y llegó ", { b: hms(davidB.T - josean.T) }, " antes."]],
+    ["Premio Pegamento", "Mónica, Iñigo A. y David B.", ["20 km juntos y ", { b: "un segundo" }, " de diferencia en meta. David B. ganó el sprint con ", { b: hms(davidB.T) }, ". Mónica fue además la ", { b: `${num(monica.catpos)}.ª de ${num(monica.catn)} veteranas` }, ": la mejor de los comiloners en su categoría."]],
+    ["Premio Cohete de Feria", "Jacob", [{ b: ord[km5order.indexOf(13310) + 1] }, " de los comiloners en el km 5 (", { b: hms(jacob.k5) }, `), ${ord[crew.indexOf(jacob) + 1].toLowerCase()} en meta. Cada tramo, más lento que el anterior. Le adelantaron `, { b: `${num(jacob.passed_by)} personas` }, "."]],
+    ["Premio Diésel", "David G.", ["Del km 5 a meta adelantó a ", { b: `${num(davidG.passed)} corredores` }, " y solo le pasaron ", { b: String(davidG.passed_by) }, ". Todo ello con un pasajero en el bolsillo."]]
+  ];
+  $("awards").replaceChildren(...awards.map(([ttl, to, parts]) => { const a = el("div", "award"); a.append(el("span", "ttl", ttl), el("span", "to", to), fill(el("p"), parts)); return a; }));
+
+  /* ---------- 04 Arkaitz ---------- */
+  $("h-case").textContent = `Arkaitz hizo ${hms(ark.T)} sin dar una zancada`;
+  fill($("d-case"), ["El dorsal 15322 completó la Behobia en el bolsillo de David G. La clasificación oficial no distingue entre piernas y bolsillos, así que aquí va su carrera, analizada con el rigor que merece."]);
+  $("case-ct").textContent = `Veterano · Donostia · modalidad: bolsillo`;
+  const tiles = [[hms(ark.T), "tiempo oficial"], ["0", "zancadas"], [num(ark.pos) + ".º", `en la general, un puesto por delante de David G. (${num(davidG.pos)}.º)`], [num(M.finishers - ark.pos), "personas con piernas que llegaron detrás de él"]];
+  $("tiles").replaceChildren(...tiles.map(([n, l]) => { const d = el("div"); d.append(el("div", "n", n), el("div", "l", l)); return d; }));
+  const aSeg = segs(ark), gSeg = segs(davidG);
+  const log = [
+    ["Salida", ["Su dorsal era de una salida anterior a la de David G. Renunció a ese privilegio para salir más tarde y en bolsillo ajeno. Sin una queja."]],
+    ["Km 5", [{ b: "Sin registro." }, " Es el único control en el que no aparece. Hipótesis principal: seguía dormido."]],
+    ["Km 10", [{ b: hms(ark.k10) + "." }, " Primera aparición oficial, clavado a David G. Ya no hay vuelta atrás."]],
+    ["Km 15", [{ b: hms(ark.k15) + "." }, ` Pasa ${ark.k15 - davidG.k15 === 1 ? "un segundo" : (ark.k15 - davidG.k15) + " segundos"} por detrás de David G. Se sospecha de un bolsillo trasero.`]],
+    ["Meta", [{ b: hms(ark.T) + "." }, " Recupera el segundo en los últimos 5 km (", { b: hms(aSeg[3]) }, " frente a ", { b: hms(gSeg[3]) }, ") y entra un puesto por delante de su porteador."]],
+    ["Lunes", ["Agujetas: ninguna. Relación esfuerzo-resultado: la mejor de toda la carrera."]]
+  ];
+  $("log").replaceChildren(...log.map(([k, parts]) => { const d = el("div"); d.append(el("span", "k", k), fill(el("span", "v"), parts)); return d; }));
+  $("verdict").textContent = `Veredicto: David G. corrió 20 km con lastre y perdió contra el lastre. Arkaitz, ${num(ark.catpos)}.º veterano. David G., ${num(davidG.catpos)}.º.`;
+
+  drawPace();
+  let lastW = document.body.clientWidth;
+  new ResizeObserver(() => { const w = document.body.clientWidth; if (w !== lastW) { lastW = w; drawPace(); } }).observe(document.body);
+})();
+</script>
+</body>
+</html>
